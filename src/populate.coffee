@@ -47,22 +47,20 @@ cleanAndLoad = (db, collectionName, documents, callback) ->
     db.collection collectionName, (err, collection) ->
         if err then return callback(err)
         
-        removeAll = (next) -> collection.remove {}, next
-        insertData = (next) -> insertAll collection, documents, next
-        logInsertion = (next) -> console.log("Inserted #{documents.length} #{collectionName}"); next();
-        verify = (next) -> checkCollectionLength collection, documents.length, next
+        removeAll   = (next) -> collection.remove {}, next
+        insertData  = (next) -> insertAll collection, documents, next
+        verify      = (next) -> checkCollectionLength collection, documents.length, next
+        log         = (next) -> console.log("Inserted #{documents.length} #{collectionName}"); next();
         
-        async.series [removeAll, insertData, logInsertion, verify], callback
+        async.series [removeAll, insertData, verify, log], callback
 
 insertAll = (collection, documents, callback) ->
-    if documents.length == 0
-        callback()
-    else
-        doc = _.head(documents)
-        doc.lastUpdatedDate = new Date()
-        collection.insert doc, {safe:true}, (error) ->
-            # verify error, null
-            insertAll collection, _.tail(documents), callback
+    operations = documents.map (doc) ->
+        (next) ->
+            doc.lastUpdatedDate = new Date()
+            collection.insert doc, {safe:true}, next
+
+    async.parallel operations, callback
 
 checkCollectionLength = (collection, expectedLength, callback) ->
     collection.find().toArray (err, inserted) ->

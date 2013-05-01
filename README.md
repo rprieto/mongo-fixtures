@@ -48,7 +48,7 @@ The config file has 2 main sections.
             collections: ['users', 'products', 'history']
         dev:
             database: (user, pass) -> "mongodb://#{user}:#{password}@alex.mongohq.com:10023/app123"
-            collections: ['products', 'history']
+            collections: ['products']
 ```
 
 # Let's go

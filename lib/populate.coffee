@@ -1,35 +1,30 @@
 _ = require 'underscore'
 async = require 'async'
-readline = require 'readline'
+interactive = require './interactive'
 loader = require './loader'
 database = require './database'
-
-rl = readline.createInterface
-    input: process.stdin
-    output: process.stdout
 
 module.exports = (config) ->
     
     load: (target, next) ->
-        connectAndLoad config, target, next
+        process config, target, next
         
     interactive: (next) ->
-        console.log "Available environments: #{_.keys(config)}"
-        promptAll ['dataset', 'env', 'username', 'password'], (err, target) ->
-            connectAndLoad config, target, next
+        interactive.getTarget config, (err, target) ->
+            if err then next('Cancelled')
+            else process config, target, next
 
-promptAll = (keys, next) ->
-    prompt = (memo, item, callback) ->
-        rl.question "#{item} > ", (value) ->
-            memo[item] = value
-            callback null, memo
-    async.reduce keys, {}, prompt, next
 
-connectAndLoad = (config, target, next) ->
+connectionString = (config, target) ->
+    config.envs[target.env].database(target.username, target.password)
+
+process = (config, target, callback) ->
     return next("Invalid environment: #{target.env}") unless config.envs[target.env]
     return next("Invalid data set: #{target.dataset}") unless config.datasets[target.dataset]
     
     database.open connectionString(config, target), (db) ->
+        
+        if err then return callback(err)
         
         operations = config.envs[target.env].collections.map (name) ->
             path = config.datasets[target.dataset] + '/' + name
@@ -38,10 +33,7 @@ connectAndLoad = (config, target, next) ->
         
         async.series operations, (err, res) ->
             db.close()
-            next err, 'Finished'
-
-connectionString = (config, target) ->
-    config.envs[target.env].database(target.username, target.password)
+            callback err, 'Finished'
 
 cleanAndLoad = (db, collectionName, documents, callback) ->
     db.collection collectionName, (err, collection) ->

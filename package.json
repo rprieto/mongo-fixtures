@@ -1,6 +1,11 @@
 {
     "name": "mongo-populate",
+    "description": "Populate MongoDB with dummy collections for testing",
     "version": "0.0.1",
+    "author": "Romain Prieto",
+    "repository": {
+        "url": "git@github.com:rprieto/mongo-populate.git"
+    },
     "dependencies": {
         "async": "0.1.x",
         "underscore": "1.4.x",
@@ -16,5 +21,6 @@
     "engines": {
         "node": "0.8.x",
         "npm": "1.1.x"
-    }
+    },
+    "main": "./lib/populate"
 }

@@ -53,16 +53,24 @@ The config file has 2 main sections.
 
 # Let's go
 
-You can call populate in 2 ways:
+Just add `mongo-populate` to your `package.json`, or:
+
+```
+npm install mongo-populate
+```
+
+Then you can call populate in 2 ways:
 
 - passing the exact dataset and target
 
 ```
+populate = require 'mongo-populate'
+
 options =
-	dataset: 'bootstrap'
-	env: 'local'
-	username: null
-	password: null
+    dataset: 'bootstrap'
+    env: 'local'
+    username: null
+    password: null
 
 populate(config).load options, finish
 ```
@@ -70,6 +78,7 @@ populate(config).load options, finish
 - in interactive mode, where it will prompt you for all required values
 
 ```
+populate = require 'mongo-populate'
 populate(config).interactive finish
 ```
 

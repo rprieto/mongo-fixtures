@@ -22,7 +22,7 @@ process = (config, target, callback) ->
     return next("Invalid environment: #{target.env}") unless config.envs[target.env]
     return next("Invalid data set: #{target.dataset}") unless config.datasets[target.dataset]
     
-    database.open connectionString(config, target), (db) ->
+    database.open connectionString(config, target), (err, db) ->
         
         if err then return callback(err)
         

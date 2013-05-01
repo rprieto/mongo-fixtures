@@ -44,14 +44,15 @@ connectionString = (config, target) ->
     config.envs[target.env].database(target.username, target.password)
 
 cleanAndLoad = (db, collectionName, documents, callback) ->
-    db.collection collectionName, (error, collection) ->
-        verify error
-        collection.remove {}, (error) ->
-            verify error, "- Removed existing #{collectionName}"
-            insertAll collection, documents, () ->
-                console.log "- Inserted #{documents.length} #{collectionName}"
-                smokeCheck collection, documents
-                callback()
+    db.collection collectionName, (err, collection) ->
+        if err then return callback(err)
+        
+        removeAll = (next) -> collection.remove {}, next
+        insertData = (next) -> insertAll collection, documents, next
+        logInsertion = (next) -> console.log("Inserted #{documents.length} #{collectionName}"); next();
+        verify = (next) -> checkCollectionLength collection, documents.length, next
+        
+        async.series [removeAll, insertData, logInsertion, verify], callback
 
 insertAll = (collection, documents, callback) ->
     if documents.length == 0
@@ -60,16 +61,13 @@ insertAll = (collection, documents, callback) ->
         doc = _.head(documents)
         doc.lastUpdatedDate = new Date()
         collection.insert doc, {safe:true}, (error) ->
-            verify error, null
+            # verify error, null
             insertAll collection, _.tail(documents), callback
 
-verify = (error, msg) ->
-    if error
-        throw "!! Failed: #{error}"
-    else
-        if msg then console.log(msg)
-
-smokeCheck = (collection, documents) ->
+checkCollectionLength = (collection, expectedLength, callback) ->
     collection.find().toArray (err, inserted) ->
-        if inserted.length != documents.length
-            throw "!! Check failed. Inserted #{inserted.length} but expected #{documents.length}"
+        if err
+            callback(err)
+        else if inserted.length != expectedLength
+            callback("Failed: inserted #{inserted.length} but expected #{documents.length}")
+        else callback(null)

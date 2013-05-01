@@ -1,5 +1,5 @@
 config = require './config'
-populate = require '../src/populate'
+populate = require '../lib/populate'
 
 options =
     dataset: 'set1'
@@ -7,7 +7,10 @@ options =
     username: null
     password: null
 
-populate(config).load options, (err, res) ->
+
+# populate(config).load options, (err, res) ->
+
+populate(config).interactive (err, res) ->
     if err
         console.log err
         process.exit 1

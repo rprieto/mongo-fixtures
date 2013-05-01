@@ -44,10 +44,10 @@ The config file has 2 main sections.
 ```    
     envs:
         local:
-            database: (user, pass) -> 'mongodb://localhost:27017/db'
+            database: (user, pass) -> 'mongodb://localhost:27017/mystore'
             collections: ['users', 'products', 'history']
         dev:
-            database: (user, pass) -> "mongodb://#{user}:#{password}@alex.mongohq.com:10023/app123"
+            database: (user, pass) -> "mongodb://#{user}:#{password}@alex.mongohq.com:10023/mystore"
             collections: ['products']
 ```
 

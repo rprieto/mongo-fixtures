@@ -1,7 +1,7 @@
 {
     "name": "mongo-populate",
     "description": "Populate MongoDB with dummy collections for testing",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "Romain Prieto",
     "repository": {
         "url": "git@github.com:rprieto/mongo-populate.git"

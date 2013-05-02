@@ -1,5 +1,5 @@
 config = require './config'
-populate = require '../lib/populate'
+fixtures = require '../lib/fixtures'
 
 options =
     dataset: 'set1'
@@ -8,9 +8,9 @@ options =
     password: null
 
 
-# populate(config).load options, (err, res) ->
+# fixtures(config).load options, (err, res) ->
 
-populate(config).interactive (err, res) ->
+fixtures(config).interactive (err, res) ->
     if err
         console.log err
         process.exit 1

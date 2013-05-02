@@ -1,10 +1,10 @@
-# mongo-populate
+# mongo-fixtures
 
 > Populate MongoDB with dummy collections for testing
 
 # Elevator pitch
 
-`mongo-populate` will read JSON documents from disk, and use them to quickly populate a MongoDB database. You can use it to bootstrap a local environment, or to initialise data required for functional tests.
+`mongo-fixtures` will read JSON documents from disk, and use them to quickly populate a MongoDB database. You can use it to bootstrap a local environment, or to initialise data required for functional tests.
 
 # Data sets
 
@@ -53,18 +53,18 @@ The config file has 2 main sections.
 
 # Let's go
 
-Just add `mongo-populate` to your `package.json`, or:
+Just add `mongo-fixtures` to your `package.json`, or:
 
 ```
-npm install mongo-populate
+npm install mongo-fixtures
 ```
 
-Then you can call populate in 2 ways:
+Then you can call it in 2 ways:
 
 - passing the exact dataset and target
 
 ```
-populate = require 'mongo-populate'
+fixtures = require 'mongo-fixtures'
 
 options =
     dataset: 'bootstrap'
@@ -72,14 +72,14 @@ options =
     username: null
     password: null
 
-populate(config).load options, finish
+fixtures(config).load options, finish
 ```
 
 - in interactive mode, where it will prompt you for all required values
 
 ```
-populate = require 'mongo-populate'
-populate(config).interactive finish
+fixtures = require 'mongo-fixtures'
+fixtures(config).interactive finish
 ```
 
 A sample callback would be:

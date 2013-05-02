@@ -2,9 +2,11 @@
 
 > Populate MongoDB with dummy collections for testing
 
+
 # Elevator pitch
 
 `mongo-fixtures` will read JSON documents from disk, and use them to quickly populate a MongoDB database. You can use it to bootstrap a local environment, or to initialise data required for functional tests.
+
 
 # Data sets
 
@@ -23,6 +25,22 @@ dataset1
             |___ phone.coffee
             |___ guitar.coffee   
 ```
+
+## Why coffee?
+
+Maybe a personal preference, but it:
+- looks nicer than JSON
+- has better syntax highlighting
+- can use actual data types without fishy post-processing
+- can use helpers & extracted methods
+
+```
+{
+    userId: ObjectID('fffffffffffffff000000001'),
+    date: new Date('28 Mar 2013')
+}
+```
+
 
 # Configuration
 
@@ -51,17 +69,15 @@ The config file has 2 main sections.
             collections: ['products']
 ```
 
+
 # Let's go
 
-Just add `mongo-fixtures` to your `package.json`, or:
+Just `npm install mongo-fixtures`!
 
-```
-npm install mongo-fixtures
-```
 
-Then you can call it in 2 ways:
+## Automated mode
 
-- passing the exact dataset and target
+Great for build scripts
 
 ```
 fixtures = require 'mongo-fixtures'
@@ -75,7 +91,9 @@ options =
 fixtures(config).load options, finish
 ```
 
-- in interactive mode, where it will prompt you for all required values
+## Interactive mode
+
+Will prompt you for all required values
 
 ```
 fixtures = require 'mongo-fixtures'

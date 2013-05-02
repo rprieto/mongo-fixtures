@@ -59,5 +59,5 @@ checkCollectionLength = (collection, expectedLength, callback) ->
         if err
             callback(err)
         else if inserted.length != expectedLength
-            callback("Failed: inserted #{inserted.length} but expected #{documents.length}")
+            callback("Failed: inserted #{inserted.length} but expected #{expectedLength}")
         else callback(null)

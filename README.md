@@ -2,6 +2,7 @@
 
 > Populate MongoDB with dummy collections for testing
 
+[![NPM version](https://badge.fury.io/js/mongo-fixtures.png)](https://npmjs.org/package/mongo-fixtures)
 
 # Elevator pitch
 

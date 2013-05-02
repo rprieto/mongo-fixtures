@@ -31,13 +31,16 @@ dataset1
 Maybe a personal preference, but it:
 - looks nicer than JSON
 - has better syntax highlighting
+- supports comments
 - can use actual data types without fishy post-processing
 - can use helpers & extracted methods
 
 ```
 {
-    userId: ObjectID('fffffffffffffff000000001'),
-    date: new Date('28 Mar 2013')
+	# valid user without an address
+    _id: ObjectID('fffffffffffffff000000001')
+    name: 'John Doe'
+    memberSince: new Date('28 Mar 2013')
 }
 ```
 

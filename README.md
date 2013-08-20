@@ -36,7 +36,7 @@ Maybe a personal preference, but it:
 - can use actual data types without fishy post-processing
 - can use helpers & extracted methods
 
-```
+```coffee
 {
 	# valid user without an address
     _id: ObjectID('fffffffffffffff000000001')
@@ -54,7 +54,7 @@ The config file has 2 main sections.
 - The data sets that can be loaded.
    These are just paths to a folder containing all the collections.
 
-```
+```coffee
     datasets:
         bootstrap: "#{__dirname}/dataset1"
         functests: "#{__dirname}/dataset2"
@@ -63,7 +63,7 @@ The config file has 2 main sections.
 - The environments they can be loaded into.
    For each environment, you must specify which collections from the datasets will be loaded. For example, maybe you *never* want to load users into `dev`.
 
-```    
+```coffee
     envs:
         local:
             database: (user, pass) -> 'mongodb://localhost:27017/mystore'
@@ -83,7 +83,7 @@ Just `npm install mongo-fixtures`!
 
 Great for build scripts
 
-```
+```coffee
 fixtures = require 'mongo-fixtures'
 
 options =
@@ -99,14 +99,14 @@ fixtures(config).load options, finish
 
 Will prompt you for all required values
 
-```
+```coffee
 fixtures = require 'mongo-fixtures'
 fixtures(config).interactive finish
 ```
 
 A sample callback would be:
 
-```
+```coffee
 finish = (err, res) ->
     if err
         console.log err

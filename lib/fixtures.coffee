@@ -41,7 +41,7 @@ cleanAndLoad = (db, collectionName, documents, callback) ->
         
         removeAll   = (next) -> collection.remove {}, next
         insertData  = (next) -> insertAll collection, documents, next
-        verify      = (next) -> checkCollectionLength collection, documents.length, next
+        verify      = (next) -> checkCollectionLength collection, collectionName, documents.length, next
         log         = (next) -> console.log("Inserted #{documents.length} #{collectionName}"); next();
         
         async.series [removeAll, insertData, verify, log], callback
@@ -54,10 +54,10 @@ insertAll = (collection, documents, callback) ->
 
     async.parallel operations, callback
 
-checkCollectionLength = (collection, expectedLength, callback) ->
+checkCollectionLength = (collection, name, expectedLength, callback) ->
     collection.find().toArray (err, inserted) ->
         if err
             callback(err)
         else if inserted.length != expectedLength
-            callback("Failed: inserted #{inserted.length} but expected #{expectedLength}")
+            callback("Failed: inserted #{inserted.length} into #{name} but expected #{expectedLength}")
         else callback(null)

@@ -1,7 +1,7 @@
 {
   "name": "mongo-fixtures",
   "description": "Populate MongoDB with dummy collections for testing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Romain Prieto",
   "repository": {
     "url": "git@github.com:rprieto/mongo-fixtures.git"

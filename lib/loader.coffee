@@ -1,18 +1,18 @@
 fs = require 'fs'
 wrench = require 'wrench'
 
-module.exports.load = (path) ->
+module.exports.load = (path, quiet) ->
     if fs.existsSync("#{path}.coffee")
-        loadFile path
+        loadFile path, quiet
     else
-        loadFolder path
+        loadFolder path, quiet
 
-loadFile = (path) ->
-    console.log "- Loading #{path}"
+loadFile = (path, quiet) ->
+    console.log "- Loading #{path}" unless quiet
     require path
 
 loadFolder = (path) ->
-    console.log "- Loading #{path}"
+    console.log "- Loading #{path}" unless quiet
     items = []
     files = wrench.readdirSyncRecursive path
     files.forEach (file) ->

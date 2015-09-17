@@ -5,10 +5,10 @@ loader = require './loader'
 database = require './database'
 
 module.exports = (config) ->
-    
+
     load: (target, next) ->
         process config, target, next
-        
+
     interactive: (next) ->
         interactive.getTarget config, (err, target) ->
             if err then next('Cancelled')
@@ -21,29 +21,29 @@ connectionString = (config, target) ->
 process = (config, target, callback) ->
     return next("Invalid environment: #{target.env}") unless config.envs[target.env]
     return next("Invalid data set: #{target.dataset}") unless config.datasets[target.dataset]
-    
+
     database.open connectionString(config, target), (err, db) ->
-        
+
         if err then return callback(err)
-        
+
         operations = config.envs[target.env].collections.map (name) ->
             path = config.datasets[target.dataset] + '/' + name
-            data = loader.load path
-            (next) -> cleanAndLoad db, name, data, next
-        
+            data = loader.load path, config.envs[target.env].quiet
+            (next) -> cleanAndLoad db, name, data, config.envs[target.env], next
+
         async.series operations, (err, res) ->
             db.close()
             callback err, 'Finished'
 
-cleanAndLoad = (db, collectionName, documents, callback) ->
+cleanAndLoad = (db, collectionName, documents, config, callback) ->
     db.collection collectionName, (err, collection) ->
         if err then return callback(err)
-        
+
         removeAll   = (next) -> collection.remove {}, next
         insertData  = (next) -> insertAll collection, documents, next
         verify      = (next) -> checkCollectionLength collection, collectionName, documents.length, next
-        log         = (next) -> console.log("Inserted #{documents.length} #{collectionName}"); next();
-        
+        log         = (next) -> console.log("Inserted #{documents.length} #{collectionName}") unless config.quiet; next();
+
         async.series [removeAll, insertData, verify, log], callback
 
 insertAll = (collection, documents, callback) ->
